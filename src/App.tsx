@@ -6,7 +6,6 @@ function App() {
 
   return (
     <>
-      <h1>Editor de texto TipTap</h1>
       <Tiptap />
     </>
   )
