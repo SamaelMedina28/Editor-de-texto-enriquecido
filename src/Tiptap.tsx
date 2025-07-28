@@ -2,8 +2,10 @@ import './index.css'
 import { useEditor, EditorContent, useEditorState } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Toolbar } from './Toolbar'
+import { useState } from 'react'
 
 const Tiptap = () => {
+  const [titulo, setTitulo] = useState('');
   const editor = useEditor({
     extensions: [StarterKit.configure({
       link: {
@@ -33,7 +35,6 @@ const Tiptap = () => {
       }
     }
   })
-
   const comandos = {
     toggleBold: () => editor.chain().focus().toggleBold().run(),
     toggleItalic: () => editor.chain().focus().toggleItalic().run(),
@@ -55,13 +56,26 @@ const Tiptap = () => {
         }
       }
     },
+
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(titulo, editor.getHTML());
   }
 
   return (
     <>
-      <Toolbar comandos={comandos} editorState={editorState} />
-      <h1 className="titulo">Editor de texto TipTap</h1>
-      <EditorContent editor={editor} />
+    <form className="form-text w-1/2 mx-auto" onSubmit={handleSubmit}>
+      <div className="flex flex-col">
+        <input type="text" placeholder="Titulo" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+        <Toolbar comandos={comandos} editorState={editorState} />
+        <EditorContent editor={editor} />
+      </div>
+      <div className="flex justify-end my-2">
+      <button className="bg-blue-500 text-white p-2 px-4 rounded hover:bg-blue-600" type="submit">Guardar</button>
+      </div>
+    </form>
     </>
   )
 }
